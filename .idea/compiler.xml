@@ -6,7 +6,7 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.6.6/f4b65c31c47798e79dd8ede03930f3e8775f0576/spring-boot-configuration-processor-2.6.6.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.9/d2a58cd8b62976d9711178f9a12e888d0616e60c/spring-boot-configuration-processor-2.7.9.jar" />
         </processorPath>
         <module name="game-publisher.adapter.main" />
         <module name="game-publisher.port.main" />
@@ -23,6 +23,9 @@
       <module name="dto-inbound" target="11" />
       <module name="dto-inbound.main" target="11" />
       <module name="dto-inbound.test" target="11" />
+      <module name="qwedemo" target="11" />
+      <module name="qwedemo.main" target="11" />
+      <module name="qwedemo.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

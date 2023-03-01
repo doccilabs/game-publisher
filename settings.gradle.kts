@@ -1,9 +1,9 @@
 rootProject.name = "game-publisher"
 
 pluginManagement {
-    val kotlinVersion = "1.5.10"
-    val springBootVersion = "2.6.6"
-    val dependencyManagementVersion = "1.0.11.RELEASE"
+    val kotlinVersion = "1.8.10"
+    val springBootVersion = "2.7.9"
+    val dependencyManagementVersion = "1.0.15.RELEASE"
     val protobufVersion = "0.8.15" // for gRPC
 
     plugins {

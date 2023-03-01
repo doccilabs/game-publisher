@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val coroutineVersion = "1.6.3"
-val mockkVersion = "1.10.3"
-val kotestVersion = "5.3.2"
+val coroutineVersion = "1.8.10"
+val mockkVersion = "1.12.0"
+val kotestVersion = "5.5.5"
 val springCloudVersion = "2021.0.2"
 
 plugins {
