@@ -8,9 +8,21 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.6.6/f4b65c31c47798e79dd8ede03930f3e8775f0576/spring-boot-configuration-processor-2.6.6.jar" />
         </processorPath>
-        <module name="spring-multi-module.commons.common.main" />
+        <module name="game-publisher.adapter.main" />
+        <module name="game-publisher.port.main" />
+        <module name="game-publisher.adapter.application-admin.main" />
+        <module name="game-publisher.port.event-interface.main" />
+        <module name="game-publisher.commons.common.main" />
+        <module name="game-publisher.port.dto-inbound.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="16" />
+    <bytecodeTargetLevel target="16">
+      <module name="common" target="11" />
+      <module name="common.main" target="11" />
+      <module name="common.test" target="11" />
+      <module name="dto-inbound" target="11" />
+      <module name="dto-inbound.main" target="11" />
+      <module name="dto-inbound.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

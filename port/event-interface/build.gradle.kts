@@ -2,7 +2,7 @@ dependencies {
 
 }
 
-// common module은 빌드 대상에서 제외한다
+// event-interface는 빌드 대상에서 제외한다
 tasks {
     named<Jar>("jar") {
         enabled = true

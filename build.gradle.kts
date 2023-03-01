@@ -17,7 +17,7 @@ plugins {
 }
 
 allprojects {
-    group = "team.me.template"
+    group = "com.elicePark"
     version = "1.0.0"
 
     apply(plugin = "kotlin")

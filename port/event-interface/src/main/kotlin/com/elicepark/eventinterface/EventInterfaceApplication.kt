@@ -1,11 +1,11 @@
-package team.me.common
+package com.elicepark.eventinterface
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class CommonApplication
+class EventInterfaceApplication
 
 fun main(args: Array<String>) {
-	runApplication<CommonApplication>(*args)
+    runApplication<EventInterfaceApplication>(*args)
 }

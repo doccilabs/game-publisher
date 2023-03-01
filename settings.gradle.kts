@@ -1,4 +1,4 @@
-rootProject.name = "spring-multi-module"
+rootProject.name = "game-publisher"
 
 pluginManagement {
     val kotlinVersion = "1.5.10"
@@ -19,5 +19,17 @@ pluginManagement {
 }
 
 include(
+    "commons",
     "commons:common"
+)
+
+include(
+    "port",
+    "port:dto-inbound",
+    "port:event-interface"
+)
+
+include(
+    "adapter",
+    "adapter:application-admin"
 )
