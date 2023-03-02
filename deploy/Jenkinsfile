@@ -19,26 +19,26 @@ podTemplate(
     ]
 ) {
     node('docker-build') {
-        stage('Checkout') {
-            checkout scm
-        }
-    }
+        try {
+            stages {
+                stage('Checkout') {
+                    checkout scm
+                }
 
-    post {
-        success {
+                slackSend(
+                    channel: 'deployment-notification',
+                    color: 'good',
+                    message: "[Successful] Job:${env.JOB_NAME}, Build num:${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|open job detail>)"
+               )
+            }
+        } catch (Exception e) {
             slackSend(
-                channel: "deployment-notification",
-                color: "good",
-                message: "[Successful] Job:${env.JOB_NAME}, Build num:${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|open job detail>)"
-            )
-        }
-
-        failure {
-            slackSend(
-                channel: "deployment-notification",
-                color: "danger",
+                channel: 'deployment-notification',
+                color: 'danger',
                 message: "[Failed] Job:${env.JOB_NAME}, Build num:${env.BUILD_NUMBER} @channel (<${env.RUN_DISPLAY_URL}|open job detail>)"
             )
+
+            throw e
         }
     }
 }
