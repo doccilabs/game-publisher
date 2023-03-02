@@ -25,11 +25,9 @@ podTemplate(
             }
 
             stage('Test') {
-                steps {
-                    dir("${env.WORKSPACE}") {
-                        sh 'chmod 755 ./gradlew'
-                        sh './gradlew test'
-                    }
+                dir("${env.WORKSPACE}") {
+                    sh 'chmod 755 ./gradlew'
+                    sh './gradlew test'
                 }
             }
 
