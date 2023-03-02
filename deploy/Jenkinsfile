@@ -20,17 +20,14 @@ podTemplate(
 ) {
     node('docker-build') {
         try {
-            stages {
-                stage('Checkout') {
-                    checkout scm
-                }
-
-                slackSend(
-                    channel: 'deployment-notification',
-                    color: 'good',
-                    message: "[Successful] Job:${env.JOB_NAME}, Build num:${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|open job detail>)"
-               )
+            stage('Checkout') {
+                checkout scm
             }
+            slackSend(
+                channel: 'deployment-notification',
+                color: 'good',
+                message: "[Successful] Job:${env.JOB_NAME}, Build num:${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|open job detail>)"
+            )
         } catch (Exception e) {
             slackSend(
                 channel: 'deployment-notification',
