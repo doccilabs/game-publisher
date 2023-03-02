@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val coroutineVersion = "1.8.10"
+val coroutineVersion = "1.6.3"
 val mockkVersion = "1.12.0"
 val kotestVersion = "5.5.5"
 val springCloudVersion = "2021.0.2"
@@ -60,9 +60,6 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
         implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutineVersion")
 
-        // Spring Cloud
-        implementation("org.springframework.cloud:spring-cloud-starter-config")
-
         // Test Implementation
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         // mockk
@@ -74,12 +71,6 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
 
         // Annotation Processing Tool
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
-        }
     }
 
     tasks.withType<KotlinCompile> {
