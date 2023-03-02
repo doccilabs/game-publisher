@@ -18,6 +18,15 @@ podTemplate(
          hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     ]
 ) {
+    environment {
+        AWS_REGION = "ap-northeast-2"
+        AWS_ACCOUNT_ID = "014276069644"
+
+
+        APP_NAME = "game-publisher"
+        ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
+    }
+
     node('docker-build') {
         try {
             stage('Checkout') {
@@ -28,6 +37,32 @@ podTemplate(
                 dir("${env.WORKSPACE}") {
                     sh 'chmod 755 ./gradlew'
                     sh './gradlew test'
+                }
+            }
+
+            stage('Build the application') {
+                dir("${env.WORKSPACE}") {
+                    sh 'cd adapter/application-admin'
+                    sh 'chmod 755 ./gradlew'
+                    sh './gradlew build'
+                }
+            }
+
+            stage('Build docker image of the admin application') {
+                dir("${env.WORKSPACE}") {
+                    sh 'cd adapter/application-admin && docker build -t ${APP_NAME} .'
+                    sh 'docker tag ${APP_NAME}:latest ${ECR_REPO}:latest'
+                }
+            }
+
+            stage('ECR Upload') {
+                withCredentials([[
+                    credentialsId: 'jenkins_ecr_user',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+                    sh "docker push ${ECR_REPO}:latest"
                 }
             }
 
