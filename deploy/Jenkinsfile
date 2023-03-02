@@ -23,6 +23,16 @@ podTemplate(
             stage('Checkout') {
                 checkout scm
             }
+
+            stage('Test') {
+                steps {
+                    dir("${env.WORKSPACE}") {
+                        sh 'chmod 755 ./gradlew'
+                        sh './gradlew test'
+                    }
+                }
+            }
+
             slackSend(
                 channel: 'deployment-notification',
                 color: 'good',
