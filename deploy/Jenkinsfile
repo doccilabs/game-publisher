@@ -18,15 +18,13 @@ podTemplate(
          hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     ]
 ) {
-    environment {
-        AWS_REGION = 'ap-northeast-2'
-        AWS_ACCOUNT_ID = '014276069644'
-
-        APP_NAME = 'game-publisher'
-        ECR_REPO = '014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher'
-    }
-
     node('docker-build') {
+        def AWS_REGION = 'ap-northeast-2'
+        def AWS_ACCOUNT_ID = '014276069644'
+
+        def APP_NAME = 'game-publisher'
+        def ECR_REPO = '014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher'
+
         try {
             stage('Checkout') {
                 checkout scm
