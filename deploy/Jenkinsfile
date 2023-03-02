@@ -19,11 +19,11 @@ podTemplate(
     ]
 ) {
     node('docker-build') {
-        def AWS_REGION = 'ap-northeast-2'
-        def AWS_ACCOUNT_ID = '014276069644'
+        def AWS_REGION = "ap-northeast-2"
+        def AWS_ACCOUNT_ID = "014276069644"
 
-        def APP_NAME = 'game-publisher'
-        def ECR_REPO = '014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher'
+        def APP_NAME = "game-publisher"
+        def ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
 
         try {
             stage('Checkout') {
@@ -32,24 +32,24 @@ podTemplate(
 
             stage('Test') {
                 dir("${env.WORKSPACE}") {
-                    sh 'chmod 755 ./gradlew'
-                    sh './gradlew test'
+                    sh "chmod 755 ./gradlew"
+                    sh "./gradlew test"
                 }
             }
 
             stage('Build the application') {
                 dir("${env.WORKSPACE}") {
-                    sh 'cd adapter/application-admin'
-                    sh 'chmod 755 ./gradlew'
-                    sh './gradlew build'
+                    sh "cd adapter/application-admin"
+                    sh "chmod 755 ./gradlew"
+                    sh "./gradlew build"
                 }
             }
 
             stage('Build docker image of the admin application') {
                 container('docker') {
                     dir("${env.WORKSPACE}") {
-                        sh 'cd adapter/application-admin && docker build -t ${APP_NAME} .'
-                        sh 'docker tag ${APP_NAME}:latest ${ECR_REPO}:latest'
+                        sh "cd adapter/application-admin && docker build -t ${APP_NAME} ."
+                        sh "docker tag ${APP_NAME}:latest ${ECR_REPO}:latest"
                     }
                 }
             }
@@ -57,9 +57,9 @@ podTemplate(
             stage('ECR Upload') {
                 container('docker') {
                     withCredentials([[
-                    credentialsId: 'jenkins_ecr_user',
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    credentialsId: "jenkins_ecr_user",
+                    accessKeyVariable: "AWS_ACCESS_KEY_ID",
+                    secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]) {
                         sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
                         sh "docker push ${ECR_REPO}:latest"
