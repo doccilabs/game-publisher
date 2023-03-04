@@ -58,12 +58,7 @@ podTemplate(
 
             stage('ECR Upload') {
                 container('docker') {
-                    withCredentials([[
-                    credentialsId: "${JENKINS_ECR_CREDENTIAL_ID}",
-                    accessKeyVariable: "$AWS_ACCESS_KEY_ID",
-                    secretKeyVariable: "$AWS_SECRET_ACCESS_KEY"
-                    ]]) {
-                        sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}"
+                    docker.withRegistry('https://014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher', "ecr:ap-northeast-2:${JENKINS_ECR_CREDENTIAL_ID}") {
                         sh "docker push ${ECR_REPO}:latest"
                     }
                 }
