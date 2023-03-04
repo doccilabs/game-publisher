@@ -22,6 +22,8 @@ podTemplate(
         def AWS_REGION = "ap-northeast-2"
         def AWS_ACCOUNT_ID = "014276069644"
 
+        def JENKINS_ECR_CREDENTIAL_ID = "jenkins_ecr_user"
+
         def APP_NAME = "game-publisher"
         def ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
 
@@ -57,7 +59,7 @@ podTemplate(
             stage('ECR Upload') {
                 container('docker') {
                     withCredentials([[
-                    credentialsId: "${jenkins_ecr_user}",
+                    credentialsId: "${JENKINS_ECR_CREDENTIAL_ID}",
                     accessKeyVariable: "AWS_ACCESS_KEY_ID",
                     secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]) {
