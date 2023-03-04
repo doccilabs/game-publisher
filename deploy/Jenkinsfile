@@ -48,8 +48,8 @@ podTemplate(
             }
 
             stage('Build docker image of the admin application') {
-                container('docker') {
-                    dir("${env.WORKSPACE}/adapter/application-admin") {
+                dir("${env.WORKSPACE}/adapter/application-admin") {
+                    container('docker') {
                         image = docker.build("${ECR_REPO}:latest .")
                     }
                 }
