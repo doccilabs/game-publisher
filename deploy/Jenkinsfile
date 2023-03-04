@@ -47,18 +47,13 @@ podTemplate(
                 }
             }
 
-            stage('Build docker image of the admin application') {
+            stage('Docker build and push') {
                 dir("${env.WORKSPACE}/adapter/application-admin") {
                     container('docker') {
-                        image = docker.build("${ECR_REPO}:latest .")
-                    }
-                }
-            }
-
-            stage('ECR Upload') {
-                container('docker') {
-                    docker.withRegistry("https://${ECR_REPO}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
-                        image.push()
+                        docker.withRegistry("https://${ECR_REPO}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
+                            image = docker.build("${ECR_REPO}:latest .")
+                            image.push()
+                        }
                     }
                 }
             }
