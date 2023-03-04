@@ -51,7 +51,7 @@ podTemplate(
                 dir("${env.WORKSPACE}/adapter/application-admin") {
                     container('docker') {
                         docker.withRegistry("https://${ECR_REPO}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
-                            image = docker.build("${ECR_REPO}:latest .")
+                            image = docker.build("${ECR_REPO}:latest")
                             image.push()
                         }
                     }
