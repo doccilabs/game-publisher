@@ -57,7 +57,7 @@ podTemplate(
             stage('ECR Upload') {
                 container('docker') {
                     withCredentials([[
-                    credentialsId: "jenkins_ecr_user",
+                    credentialsId: "${jenkins_ecr_user}",
                     accessKeyVariable: "AWS_ACCESS_KEY_ID",
                     secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]) {
