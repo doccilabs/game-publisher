@@ -1,3 +1,11 @@
+def AWS_REGION = "ap-northeast-2"
+def AWS_ACCOUNT_ID = "014276069644"
+
+def JENKINS_ECR_CREDENTIAL_ID = "jenkins_ecr_user"
+
+def APP_NAME = "game-publisher"
+def ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
+
 podTemplate(
     label: 'docker-build',
     containers: [
@@ -19,14 +27,6 @@ podTemplate(
     ]
 ) {
     node('docker-build') {
-        def AWS_REGION = "ap-northeast-2"
-        def AWS_ACCOUNT_ID = "014276069644"
-
-        def JENKINS_ECR_CREDENTIAL_ID = "jenkins_ecr_user"
-
-        def APP_NAME = "game-publisher"
-        def ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
-
         try {
             stage('Checkout') {
                 checkout scm
@@ -49,17 +49,16 @@ podTemplate(
 
             stage('Build docker image of the admin application') {
                 container('docker') {
-                    dir("${env.WORKSPACE}") {
-                        sh "cd adapter/application-admin && docker build -t ${APP_NAME} ."
-                        sh "docker tag ${APP_NAME}:latest ${ECR_REPO}:latest"
+                    dir("${env.WORKSPACE}/adapter/application-admin") {
+                        image = docker.build("${ECR_REPO}:latest .")
                     }
                 }
             }
 
             stage('ECR Upload') {
                 container('docker') {
-                    docker.withRegistry('https://014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher', "ecr:ap-northeast-2:${JENKINS_ECR_CREDENTIAL_ID}") {
-                        sh "docker push ${ECR_REPO}:latest"
+                    docker.withRegistry("https://${ECR_REPO}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
+                        image.push()
                     }
                 }
             }
