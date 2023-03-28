@@ -12,6 +12,9 @@ plugins {
     id("org.jetbrains.kotlin.plugin.noarg")
     kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+
+    kotlin("kapt")
 
     id("com.google.protobuf")
 }
@@ -32,6 +35,11 @@ allprojects {
     }
 }
 
+// 프로젝트의 실행 환경이 mac인가?
+fun isMacOs(): Boolean {
+    return System.getProperty("os.name").toLowerCase().contains("mac")
+}
+
 // 공통 Dependency 적용을 제외할 모듈 리스트
 val nonDependencyProjects = listOf("commons", "independent", "grpc-interface")
 
@@ -41,6 +49,9 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
 
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
+    apply(plugin = "kotlin-jpa")
+
+    apply(plugin = "kotlin-kapt")
 
     apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
     apply(plugin = "org.jetbrains.kotlin.plugin.noarg")
@@ -55,13 +66,19 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
         implementation("com.fasterxml.jackson.module:jackson-module-afterburner")
 
         // Kotlin Coroutines
-        implementation("org.springframework.boot:spring-boot-starter-webflux")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
         implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutineVersion")
 
-        // Test Implementation
+        // Spring
+        implementation("org.springframework.boot:spring-boot-starter-webflux")
+        implementation("org.springframework.boot:spring-boot-starter-validation")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        // Database
+        implementation("com.mysql:mysql-connector-j")
+
         // mockk
         testImplementation("io.mockk:mockk:$mockkVersion")
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion") // for kotest framework
@@ -70,7 +87,12 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
         // Annotation Processing Tool
-        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+        // netty for macOs
+        if(isMacOs()) {
+            implementation("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
+        }
     }
 
     tasks.withType<KotlinCompile> {

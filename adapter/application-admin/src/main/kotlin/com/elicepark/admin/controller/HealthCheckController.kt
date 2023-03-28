@@ -14,8 +14,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/health")
 class HealthCheckController {
-    @GetMapping("")
-    suspend fun healthCheck(): SuccessResults.Single<String> = coroutineScope {
-        return@coroutineScope ResultFactory.getSuccessResponse()
-    }
+
 }

@@ -13,6 +13,9 @@ pluginManagement {
         id("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
         kotlin("jvm") version kotlinVersion
         kotlin("plugin.spring") version kotlinVersion
+        kotlin("plugin.jpa") version kotlinVersion
+
+        kotlin("kapt") version kotlinVersion
 
         id("com.google.protobuf") version protobufVersion // gRPC
     }
