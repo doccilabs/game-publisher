@@ -31,5 +31,6 @@ include(
 
 include(
     "adapter",
-    "adapter:application-admin"
+    "adapter:application-admin",
+    "adapter:application-user"
 )
