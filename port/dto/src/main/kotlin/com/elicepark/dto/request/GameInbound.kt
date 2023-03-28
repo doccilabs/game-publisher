@@ -1,5 +1,8 @@
 package com.elicepark.dto.request
 
+import com.elicepark.domain.entity.Game
+import com.elicepark.domain.enums.Status
+import com.elicepark.domain.vo.TeamInfos
 import java.time.LocalDate
 import javax.validation.constraints.Future
 import javax.validation.constraints.NotBlank
@@ -21,5 +24,16 @@ sealed class GameInbound {
         val awayTeamName: String,
         @field:Future
         val startDate: LocalDate
-    )
+    ) {
+        // CreateRequest를 Entity로 변환하는 메소드
+        fun toEntity(): Game {
+            val teamInfos: TeamInfos = TeamInfos(this.homeTeamId, this.homeTeamName, this.awayTeamId, this.awayTeamName)
+            return Game(
+                teamInfos = teamInfos,
+                startDate = startDate,
+                registerDate = LocalDate.now(),
+                status = Status.READY
+            )
+        }
+    }
 }

@@ -32,6 +32,7 @@ include(
     "port",
     "port:event-interface",
     "port:repository",
+    "port:service",
     "port:dto"
 )
 

@@ -16,5 +16,5 @@ data class TeamInfos(
     @get:Column(name = "away_team_id", nullable = false)
     var awayTeamId: String,
     @get:Column(name = "away_team_name", nullable = false)
-    var awawTeamName: String
+    var awayTeamName: String
 )

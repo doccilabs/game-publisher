@@ -1,11 +1,11 @@
-package com.elicepark.admin
+package com.elicepark.service
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(scanBasePackages = ["com.elicepark"])
-class AdminApplication
+class ServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<AdminApplication>(*args)
+    runApplication<ServiceApplication>(*args)
 }

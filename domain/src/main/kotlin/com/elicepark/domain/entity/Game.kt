@@ -16,7 +16,7 @@ class Game(
     @get:GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @get:Embedded
-    var teamInfo: TeamInfos = TeamInfos("0", "team0", "1", "team1"),
+    var teamInfos: TeamInfos = TeamInfos("0", "team0", "1", "team1"),
     @get:Column(name = "start_date", nullable = false)
     var startDate: LocalDate = LocalDate.now(),
     @get:Column(name = "register_date", nullable = false)

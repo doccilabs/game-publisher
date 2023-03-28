@@ -1,5 +1,6 @@
 package com.elicepark.dto.response
 
+import com.elicepark.domain.entity.Game
 import java.time.LocalDate
 
 /**
@@ -14,5 +15,20 @@ sealed class GameOutbound {
         val awayTeamId: String,
         val awayTeamName: String,
         val startDate: LocalDate
-    )
+    ) {
+        companion object {
+            fun of(game: Game): CreateResponse {
+                return with(game) {
+                    CreateResponse(
+                        this.id,
+                        this.teamInfos.homeTeamId,
+                        this.teamInfos.homeTeamName,
+                        this.teamInfos.awayTeamId,
+                        this.teamInfos.awayTeamName,
+                        this.startDate
+                    )
+                }
+            }
+        }
+    }
 }
