@@ -1,8 +1,7 @@
 dependencies {
-
+    api(project(":domain"))
 }
 
-// dto 모듈은 빌드 대상에서 제외한다
 tasks {
     named<Jar>("jar") {
         enabled = true

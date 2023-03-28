@@ -1,10 +1,10 @@
-package com.elicepark.dtoinbound
+package com.elicepark.repository
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DtoInboundApplicationTests {
+class RepositoryApplicationTests {
 
     @Test
     fun contextLoads() {

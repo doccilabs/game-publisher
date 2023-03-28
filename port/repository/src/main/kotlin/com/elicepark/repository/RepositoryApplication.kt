@@ -1,11 +1,11 @@
-package com.elicepark.dtoinbound
+package com.elicepark.repository
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class DtoInboundApplication
+class RepositoryApplication
 
 fun main(args: Array<String>) {
-    runApplication<DtoInboundApplication>(*args)
+    runApplication<RepositoryApplication>(*args)
 }
