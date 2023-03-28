@@ -26,10 +26,13 @@ include(
     "commons:common"
 )
 
+include("domain")
+
 include(
     "port",
-    "port:dto-inbound",
-    "port:event-interface"
+    "port:event-interface",
+    "port:repository",
+    "port:dto"
 )
 
 include(
