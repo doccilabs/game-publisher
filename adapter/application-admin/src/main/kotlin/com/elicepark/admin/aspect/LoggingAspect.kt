@@ -39,7 +39,7 @@ class LoggingAspect {
 
     // 처리 실패한 요청에 대해서 로그를 찍는 메소드
     @AfterThrowing(pointcut = "allControllerPointcut()", throwing = "exception")
-    fun writeFailLog(joinPoint: JoinPoint, exception: Exception): Unit {
+    fun writeFailLog(joinPoint: JoinPoint, exception: RuntimeException): Unit {
         val methodName = joinPoint.signature.name
         val className = joinPoint.signature.declaringTypeName
         val args: Array<Any> = joinPoint.args

@@ -4,9 +4,8 @@ import com.elicepark.common.result.ResultFactory
 import com.elicepark.common.result.SuccessResults
 import com.elicepark.dto.request.GameInbound
 import com.elicepark.dto.response.GameOutbound
-import com.elicepark.service.game.GameService
+import com.elicepark.service.game.service.ifs.GameService
 import kotlinx.coroutines.coroutineScope
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

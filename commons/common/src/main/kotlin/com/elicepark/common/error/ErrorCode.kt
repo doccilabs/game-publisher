@@ -14,5 +14,8 @@ enum class ErrorCode(
     RESOURCE_DUPLICATION_ERROR(400, "이미 존재합니다"),
     AUTHENTICATION_ERROR(401, "허용되지 않은 접근입니다"),
     AUTHORIZATION_ERROR(403, "올바르지 않은 권한입니다"),
-    RESOURCE_NOT_FOUND_ERROR(404, "리소스가 존재하지 않습니다")
+    RESOURCE_NOT_FOUND_ERROR(404, "리소스가 존재하지 않습니다"),
+
+    /* 커스텀 오류 */
+    GAME_CONTINUOUSLY_ASSIGNED_ERROR(400, "이틀 연속으로 경기가 잡히는 팀이 존재합니다. 다시 확인해주세요")
 }

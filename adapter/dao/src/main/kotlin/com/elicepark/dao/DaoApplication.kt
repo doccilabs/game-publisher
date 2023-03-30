@@ -1,13 +1,11 @@
-package com.elicepark.domain
+package com.elicepark.dao
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
 @SpringBootApplication(scanBasePackages = ["com.elicepark"])
-@EnableJpaAuditing
-class DomainApplication
+class DaoApplication
 
 fun main(args: Array<String>) {
-	runApplication<DomainApplication>(*args)
+    runApplication<DaoApplication>(*args)
 }

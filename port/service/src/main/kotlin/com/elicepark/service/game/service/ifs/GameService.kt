@@ -1,4 +1,4 @@
-package com.elicepark.service.game
+package com.elicepark.service.game.service.ifs
 
 import com.elicepark.dto.request.GameInbound
 import com.elicepark.dto.response.GameOutbound

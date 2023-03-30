@@ -21,6 +21,9 @@ sealed class ErrorResults {
             // 필드에서 에러가 터진게 아닌 경우
             fun of(errorCode: ErrorCode): Response = Response(errorCode.message)
 
+            // 하나의 필드에서만 에러가 터진 경우
+            fun of(fieldError: FieldError): Response = Response(fieldError.message)
+
             // 필드에서 에러가 터진 경우 -> 리스트의 첫번째 원소의 메세지만 뽑아준다
             fun of(fieldErrorList: List<FieldError>): Response = Response(fieldErrorList.first().message)
 
