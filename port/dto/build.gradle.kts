@@ -1,5 +1,5 @@
 dependencies {
-
+    api(project(":domain"))
 }
 
 tasks {

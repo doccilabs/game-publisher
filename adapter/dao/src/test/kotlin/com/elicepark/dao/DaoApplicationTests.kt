@@ -1,13 +1,13 @@
-package com.elicepark.domain
+package com.elicepark.dao
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DomainApplicationTests {
+class DaoApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 
 }
