@@ -39,6 +39,7 @@ class GameRepositoryImpl(private val queryFactory: JPAQueryFactory) : GameReposi
             .where(
                 game.timeInfos.startTime.loe(createRequest.endTime)
                     .and(game.timeInfos.endTime.goe(createRequest.startTime))
+                    .and(game.timeInfos.startDate.eq(createRequest.startDate))
             )
             .limit(1)
             .fetchOne()
