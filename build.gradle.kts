@@ -4,12 +4,15 @@ val coroutineVersion = "1.6.3"
 val mockkVersion = "1.12.0"
 val kotestVersion = "5.5.5"
 val springCloudVersion = "2021.0.2"
+val queryDslVersion = "5.0.0"
 
 plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     id("org.jetbrains.kotlin.plugin.allopen")
     id("org.jetbrains.kotlin.plugin.noarg")
+    id("com.ewerk.gradle.plugins.querydsl")
+
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
@@ -32,6 +35,13 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://jitpack.io")
+        maven("https://plugins.gradle.org/m2/")
+    }
+
+    // DuplicatesStrategy 설정
+    tasks.withType<Jar> {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 }
 
@@ -50,6 +60,7 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "kotlin-jpa")
+    apply(plugin = "com.ewerk.gradle.plugins.querydsl")
 
     apply(plugin = "kotlin-kapt")
 
@@ -78,6 +89,10 @@ configure(subprojects.filter { it.name !in nonDependencyProjects }) {
 
         // Database
         implementation("com.mysql:mysql-connector-j")
+
+        // queryDSL
+        implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
+        kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
 
         // mockk
         testImplementation("io.mockk:mockk:$mockkVersion")
