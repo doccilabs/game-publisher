@@ -24,13 +24,6 @@ class GameServiceImpl(
         // 게임이 생성 가능한지 검증
         gameValidator.validateCreatable(createRequest)
 
-        // 경기일이 이틀 연속으로 잡힌 경우 예외처리
-        val isContinuouslyAssigned = gameRepository.isTeamsContinuouslyAssignedBy(createRequest)
-
-        if(isContinuouslyAssigned) {
-            throw GameContinuouslyAssignedException(ErrorCode.GAME_CONTINUOUSLY_ASSIGNED_ERROR)
-        }
-
         // 생성 가능한 경우 경기 등록 진행
         val game = createRequest.toEntity()
         val savedGame = gameRepository.save(game)

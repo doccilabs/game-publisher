@@ -1,6 +1,7 @@
 package com.elicepark.admin.advice
 
 import com.elicepark.common.exceptions.GameContinuouslyAssignedException
+import com.elicepark.common.exceptions.GameTimeConflictException
 import com.elicepark.common.exceptions.InsideFiveDaysException
 import com.elicepark.common.result.ErrorResults
 import org.slf4j.LoggerFactory
@@ -35,6 +36,14 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(GameContinuouslyAssignedException::class)
     fun handleGameContinuouslyAssignedException(exception: GameContinuouslyAssignedException): ResponseEntity<ErrorResults.Response> {
+        val responseBody = ErrorResults.Response.of(exception.errorCode)
+
+        return ResponseEntity.status(exception.errorCode.status)
+            .body(responseBody)
+    }
+
+    @ExceptionHandler(GameTimeConflictException::class)
+    fun handleGameTimeConflictException(exception: GameTimeConflictException): ResponseEntity<ErrorResults.Response> {
         val responseBody = ErrorResults.Response.of(exception.errorCode)
 
         return ResponseEntity.status(exception.errorCode.status)

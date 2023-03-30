@@ -2,9 +2,11 @@ package com.elicepark.dto.request
 
 import com.elicepark.domain.entity.Game
 import com.elicepark.domain.enums.Status
+import com.elicepark.domain.vo.TImeInfos
 import com.elicepark.domain.vo.TeamInfos
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
+import java.time.LocalTime
 import javax.validation.constraints.Future
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -30,14 +32,19 @@ sealed class GameInbound {
         val awayTeamName: String,
         @field:NotNull()
         @field:Future(message = "과거 시점으로 경기 일정을 잡을 수 없습니다")
-        val startDate: LocalDate
+        val startDate: LocalDate,
+        @field:NotNull
+        val startTime: LocalTime,
+        @field:NotNull
+        val endTime: LocalTime
     ) {
         // CreateRequest를 Entity로 변환하는 메소드
         fun toEntity(): Game {
             val teamInfos: TeamInfos = TeamInfos(this.homeTeamId, this.homeTeamName, this.awayTeamId, this.awayTeamName)
+            val timeInfos = TImeInfos(startDate, startTime, endTime)
             return Game(
                 teamInfos = teamInfos,
-                startDate = startDate,
+                timeInfos = timeInfos,
                 registerDate = LocalDate.now(),
                 status = Status.READY
             )

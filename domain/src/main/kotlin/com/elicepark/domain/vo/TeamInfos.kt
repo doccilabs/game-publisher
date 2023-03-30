@@ -10,11 +10,11 @@ import javax.persistence.Embeddable
 @Embeddable
 data class TeamInfos(
     @get:Column(name = "home_team_id", nullable = false)
-    var homeTeamId: String,
+    var homeTeamId: String = "",
     @get:Column(name = "home_team_name", nullable = false)
-    var homeTeamName: String,
+    var homeTeamName: String = "",
     @get:Column(name = "away_team_id", nullable = false)
-    var awayTeamId: String,
+    var awayTeamId: String = "",
     @get:Column(name = "away_team_name", nullable = false)
-    var awayTeamName: String
+    var awayTeamName: String = ""
 )
