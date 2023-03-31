@@ -5,8 +5,11 @@ import com.elicepark.domain.enums.Status
 import com.elicepark.domain.vo.TImeInfos
 import com.elicepark.domain.vo.TeamInfos
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.springframework.data.domain.Pageable
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.temporal.TemporalAdjusters
 import javax.validation.constraints.Future
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -48,6 +51,26 @@ sealed class GameInbound {
                 registerDate = LocalDate.now(),
                 status = Status.READY
             )
+        }
+    }
+
+    // N월M주에 있는 경기를 가져올 때 사용하는 DTO
+    data class GetGameListOfWeekRequest(
+        val month: Int,
+        val week: Int,
+        val pageable: Pageable
+    ) {
+        private val firstDate =
+            LocalDate.now().withMonth(month).with(TemporalAdjusters.dayOfWeekInMonth(week, DayOfWeek.SUNDAY))
+
+        // 첫번째 날짜를 가져오는 메소드
+        fun getFirstDate(): LocalDate {
+            return this.firstDate
+        }
+
+        // 두번째 날짜를 가져오는 메소드
+        fun getLastDate(): LocalDate {
+            return firstDate.with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
         }
     }
 }

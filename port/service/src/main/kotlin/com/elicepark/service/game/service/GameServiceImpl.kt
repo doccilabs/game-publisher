@@ -29,4 +29,12 @@ class GameServiceImpl(
         val savedGame = gameRepository.save(game)
         return GameOutbound.CreateResponse.of(savedGame)
     }
+
+    override fun getGameListByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): List<GameOutbound.GetSimpleResponse> {
+         return gameRepository.getGameListWithInByPagination(getRequest)
+    }
+
+    override fun getTotalCountBtWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int {
+        return gameRepository.getCountWithIn(getRequest)
+    }
 }

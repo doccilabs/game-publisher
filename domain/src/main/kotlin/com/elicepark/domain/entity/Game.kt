@@ -23,5 +23,6 @@ class Game(
     @get:Column(name = "register_date", nullable = false)
     var registerDate: LocalDate = LocalDate.now(),
     @get:Column(name = "status", nullable = false)
+    @get:Enumerated(EnumType.STRING)
     var status: Status = Status.READY
 ) : BaseEntity()
