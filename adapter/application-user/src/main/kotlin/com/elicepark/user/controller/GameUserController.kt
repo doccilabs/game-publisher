@@ -33,8 +33,8 @@ class GameUserController(
         val getRequest = GameInbound.GetGameListOfWeekRequest(month, week, pageable)
 
         val responseBody = with(getRequest) {
-            val gameResponseList = gameService.getGameListByWeekAndMonth(getRequest)
-            val totalCount = gameService.getTotalCountBtWeekAndMonth(getRequest)
+            val gameResponseList = gameService.getGameListByWeekAndMonth(this)
+            val totalCount = gameService.getTotalCountBtWeekAndMonth(this)
 
             ResultFactory.getPaginatedResponse(totalCount, page, gameResponseList)
         }
