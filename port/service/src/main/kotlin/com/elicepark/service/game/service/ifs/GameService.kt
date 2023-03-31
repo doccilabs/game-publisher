@@ -15,5 +15,5 @@ interface GameService {
     fun getGameListByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): List<GameOutbound.GetSimpleResponse>
 
     // N월 M주에 존재하는 경기의 전체 개수를 반환하는 메소드
-    fun getTotalCountBtWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int
+    fun getTotalCountByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int
 }

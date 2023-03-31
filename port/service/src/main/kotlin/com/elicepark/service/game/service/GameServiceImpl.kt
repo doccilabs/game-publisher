@@ -34,7 +34,7 @@ class GameServiceImpl(
          return gameRepository.getGameListWithInByPagination(getRequest)
     }
 
-    override fun getTotalCountBtWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int {
+    override fun getTotalCountByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int {
         return gameRepository.getCountWithIn(getRequest)
     }
 }

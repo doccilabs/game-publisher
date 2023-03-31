@@ -7,7 +7,6 @@ import com.elicepark.dto.response.GameOutbound
 import com.elicepark.service.game.service.ifs.GameService
 import kotlinx.coroutines.coroutineScope
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -34,7 +33,7 @@ class GameUserController(
 
         val responseBody = with(getRequest) {
             val gameResponseList = gameService.getGameListByWeekAndMonth(this)
-            val totalCount = gameService.getTotalCountBtWeekAndMonth(this)
+            val totalCount = gameService.getTotalCountByWeekAndMonth(this)
 
             ResultFactory.getPaginatedResponse(totalCount, page, gameResponseList)
         }
