@@ -6,6 +6,9 @@ import com.elicepark.dto.request.GameInbound
 import com.elicepark.dto.response.GameOutbound
 import com.elicepark.service.game.service.ifs.GameService
 import kotlinx.coroutines.coroutineScope
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,8 +26,22 @@ class GameAdminController(private val gameService: GameService) {
     @PostMapping("")
     suspend fun createGame(@Valid @RequestBody createRequest: GameInbound.CreateRequest): SuccessResults.Single<GameOutbound.CreateResponse> =
         coroutineScope {
-            val createResponse = gameService.registerGame(createRequest)
+            val gameCreatedResponse = gameService.registerGame(createRequest)
 
-            return@coroutineScope ResultFactory.getSingleResponse(createResponse)
+            return@coroutineScope ResultFactory.getSingleResponse(gameCreatedResponse)
+        }
+
+    // 경기를 삭제하는 메소드
+    @DeleteMapping("/{game-id}")
+    suspend fun deleteGame(@PathVariable(name = "game-id") gameId: Long): ResponseEntity<SuccessResults.Single<GameOutbound.DeleteResponse?>> =
+        coroutineScope {
+            val gameDeletedResponse = gameService.deleteById(gameId)
+
+            val responseBuilder = when (gameDeletedResponse) {
+                null -> ResponseEntity.status(204)
+                else -> ResponseEntity.status(200)
+            }
+
+            return@coroutineScope responseBuilder.body(ResultFactory.getSingleResponse(gameDeletedResponse))
         }
 }
