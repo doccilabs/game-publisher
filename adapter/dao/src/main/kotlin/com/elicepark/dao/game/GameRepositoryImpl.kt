@@ -51,7 +51,7 @@ class GameRepositoryImpl(private val queryFactory: JPAQueryFactory) : GameReposi
 
     override fun getGameListWithInByPagination(getRequest: GameInbound.GetGameListOfWeekRequest): List<GameOutbound.GetSimpleResponse> {
         val gameResponseList = queryFactory.select(
-            Projections.fields(
+            Projections.constructor(
                 GameOutbound.GetSimpleResponse::class.java,
                 game.id,
                 game.teamInfos.homeTeamId,
@@ -60,8 +60,9 @@ class GameRepositoryImpl(private val queryFactory: JPAQueryFactory) : GameReposi
                 game.status
             )
         )
+            .from(game)
             .where(
-                game.timeInfos.startDate.between(getRequest.getFirstDate(), getRequest.getLastDate())
+                game.timeInfos.startDate.between(getRequest.from, getRequest.to)
             )
             .offset(getRequest.pageable.offset)
             .limit(getRequest.pageable.pageSize.toLong())
@@ -75,7 +76,7 @@ class GameRepositoryImpl(private val queryFactory: JPAQueryFactory) : GameReposi
         return queryFactory.select(game.id)
             .from(game)
             .where(
-                game.timeInfos.startDate.between(getRequest.getFirstDate(), getRequest.getLastDate())
+                game.timeInfos.startDate.between(getRequest.from, getRequest.to)
             )
             .fetch()
             .size

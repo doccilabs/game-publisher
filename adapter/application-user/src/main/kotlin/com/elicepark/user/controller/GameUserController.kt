@@ -7,10 +7,13 @@ import com.elicepark.dto.response.GameOutbound
 import com.elicepark.service.game.service.ifs.GameService
 import kotlinx.coroutines.coroutineScope
 import org.springframework.data.domain.PageRequest
+import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 /**
  * @author Brian
@@ -21,23 +24,25 @@ import org.springframework.web.bind.annotation.RestController
 class GameUserController(
     private val gameService: GameService
 ) {
-    @GetMapping()
+    @GetMapping("")
     suspend fun getGamesByMonthAndWeek(
-        @RequestParam month: Int,
-        @RequestParam week: Int,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) from: LocalDate,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) to: LocalDate,
         @RequestParam page: Int,
         @RequestParam limit: Int
-    ): SuccessResults.Paginated<GameOutbound.GetSimpleResponse> = coroutineScope {
-        val pageable = PageRequest.of(page, limit)
-        val getRequest = GameInbound.GetGameListOfWeekRequest(month, week, pageable)
-
-        val responseBody = with(getRequest) {
+    ) = coroutineScope {
+        val pageable = PageRequest.of(page - 1, limit)
+        val getRequest = GameInbound.GetGameListOfWeekRequest(from, to, pageable)
+        
+        with(getRequest) {
             val gameResponseList = gameService.getGameListByWeekAndMonth(this)
             val totalCount = gameService.getTotalCountByWeekAndMonth(this)
 
-            ResultFactory.getPaginatedResponse(totalCount, page, gameResponseList)
-        }
+            if (gameResponseList.isNotEmpty()) {
+                return@coroutineScope ResponseEntity.status(200).body(ResultFactory.getPaginatedResponse(totalCount, page, gameResponseList))
+            }
 
-        return@coroutineScope responseBody
+            return@coroutineScope ResponseEntity.status(204).body(ResultFactory.getPaginatedResponse(totalCount, page, gameResponseList))
+        }
     }
 }
