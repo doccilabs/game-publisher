@@ -3,7 +3,9 @@ package com.elicepark.dao.game
 import com.elicepark.domain.entity.Game
 import com.elicepark.domain.entity.QGame.game
 import com.elicepark.dto.request.GameInbound
+import com.elicepark.dto.response.GameOutbound
 import com.elicepark.repository.game.GameRepositoryCustom
+import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
 
@@ -45,5 +47,38 @@ class GameRepositoryImpl(private val queryFactory: JPAQueryFactory) : GameReposi
             .fetchOne()
 
         return timeConflictedGame != null
+    }
+
+    override fun getGameListWithInByPagination(getRequest: GameInbound.GetGameListOfWeekRequest): List<GameOutbound.GetSimpleResponse> {
+        val gameResponseList = queryFactory.select(
+            Projections.constructor(
+                GameOutbound.GetSimpleResponse::class.java,
+                game.id,
+                game.teamInfos.homeTeamId,
+                game.teamInfos.awayTeamId,
+                game.timeInfos,
+                game.status
+            )
+        )
+            .from(game)
+            .where(
+                game.timeInfos.startDate.between(getRequest.from, getRequest.to)
+            )
+            .offset(getRequest.pageable.offset)
+            .limit(getRequest.pageable.pageSize.toLong())
+            .fetch()
+
+
+        return gameResponseList
+    }
+
+    override fun getCountWithIn(getRequest: GameInbound.GetGameListOfWeekRequest): Int {
+        return queryFactory.select(game.id)
+            .from(game)
+            .where(
+                game.timeInfos.startDate.between(getRequest.from, getRequest.to)
+            )
+            .fetch()
+            .size
     }
 }
