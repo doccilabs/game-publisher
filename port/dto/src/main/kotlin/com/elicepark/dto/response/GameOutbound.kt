@@ -44,4 +44,15 @@ sealed class GameOutbound {
             }
         }
     }
+
+    // 경기를 삭제할 시 반환하는 DTO
+    data class DeleteResponse(
+        val id: Long
+    ) {
+        companion object {
+            fun of(game: Game): DeleteResponse = with(game) {
+                DeleteResponse(this.id)
+            }
+        }
+    }
 }

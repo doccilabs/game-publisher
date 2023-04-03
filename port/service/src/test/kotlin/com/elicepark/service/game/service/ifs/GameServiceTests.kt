@@ -3,6 +3,7 @@ package com.elicepark.service.game.service.ifs
 import com.elicepark.common.exceptions.GameContinuouslyAssignedException
 import com.elicepark.common.exceptions.GameTimeConflictException
 import com.elicepark.common.exceptions.InsideFiveDaysException
+import com.elicepark.domain.entity.Game
 import com.elicepark.dto.request.GameInbound
 import com.elicepark.repository.game.GameRepository
 import com.elicepark.service.game.service.GameServiceImpl
@@ -14,10 +15,11 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -92,6 +94,44 @@ class GameServiceTests {
 
         assertEquals(createRequest.awayTeamId, createResponse.teamInfo.awayTeamId)
         assertEquals(createRequest.homeTeamId, createResponse.teamInfo.homeTeamId)
+    }
+
+    @Test
+    fun `id에 대응하는 경기가 존재하지 않는 경우 null을 반환한다`() {
+        // given
+        val gameId = 1L
+
+        every { gameRepository.findByIdOrNull(gameId) } returns null
+
+        // when
+        val deleteResult = gameService.deleteById(gameId)
+
+        // then
+        verify(exactly = 1) { gameRepository.findByIdOrNull(gameId) }
+        verify(exactly = 0) { gameRepository.deleteById(gameId) }
+        verify(exactly = 1) { gameService.deleteById(gameId) }
+        assertNull(deleteResult)
+    }
+
+    @Test
+    fun `id에 대응하는 경기가 존재하는 경우 삭제 처리한다`() {
+        // given
+        val gameId = 1L
+        val gameEntity = Game(id = gameId)
+
+        every { gameRepository.findByIdOrNull(gameId) } returns gameEntity
+
+        // when
+        val deleteResult = gameService.deleteById(gameId)
+
+        // then
+        verify(exactly = 1) { gameRepository.findByIdOrNull(gameId) }
+        verify(exactly = 1) { gameRepository.deleteById(gameId) }
+        verify(exactly = 1) { gameService.deleteById(gameId) }
+        assertNotNull(deleteResult)
+        deleteResult?.let {
+            assertEquals(it.id, gameId)
+        }
     }
 
     // createRequest를 생성하는 메소드

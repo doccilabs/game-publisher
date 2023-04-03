@@ -7,19 +7,20 @@ import com.elicepark.dto.response.GameOutbound
 import com.elicepark.repository.game.GameRepository
 import com.elicepark.service.game.service.ifs.GameService
 import com.elicepark.service.game.validator.ifs.GameValidator
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * @author Brian
  * @since 2023/03/29
  */
 @Service
-@Transactional
 class GameServiceImpl(
     private val gameRepository: GameRepository,
     private val gameValidator: GameValidator
 ) : GameService {
+    @Transactional
     override fun registerGame(createRequest: GameInbound.CreateRequest): GameOutbound.CreateResponse {
         // 게임이 생성 가능한지 검증
         gameValidator.validateCreatable(createRequest)
@@ -30,11 +31,23 @@ class GameServiceImpl(
         return GameOutbound.CreateResponse.of(savedGame)
     }
 
+    @Transactional(readOnly = true)
     override fun getGameListByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): List<GameOutbound.GetSimpleResponse> {
-         return gameRepository.getGameListWithInByPagination(getRequest)
+        return gameRepository.getGameListWithInByPagination(getRequest)
     }
 
+    @Transactional(readOnly = true)
     override fun getTotalCountByWeekAndMonth(getRequest: GameInbound.GetGameListOfWeekRequest): Int {
         return gameRepository.getCountWithIn(getRequest)
+    }
+
+    @Transactional
+    override fun deleteById(id: Long): GameOutbound.DeleteResponse? {
+        val foundGame = gameRepository.findByIdOrNull(id)
+
+        return foundGame?.let {
+            gameRepository.deleteById(it.id)
+            GameOutbound.DeleteResponse.of(it)
+        }
     }
 }
