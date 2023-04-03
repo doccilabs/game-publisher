@@ -18,6 +18,17 @@ object ResultFactory {
     // 여러개 데이터를 성공 결과로 가지는 경우를 반환하는 메소드
     fun <T> getMultipleResponse(data: List<T>): SuccessResults.Multiple<T> = SuccessResults.Multiple(data)
 
+    // 페이지네이션 된 데이터를 성공 결과로 가지는 경우를 반환하는 메소드
+    fun <T> getPaginatedResponse(
+        totalElements: Int,
+        page: Int,
+        data: List<T>
+    ): SuccessResults.Paginated<T> {
+        val totalPages = Math.ceil(totalElements.toDouble() / data.size.toDouble()).toInt()
+
+        return SuccessResults.Paginated(totalPages, totalElements, page, data.size, data)
+    }
+
     // field에서 에러가 터지지 않은 경우 에러코드만 포함시켜서 반환해주는 메소드
     fun getErrorResponse(errorCode: ErrorCode): ErrorResults.Response = ErrorResults.Response.of(errorCode)
 

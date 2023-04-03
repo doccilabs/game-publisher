@@ -4,7 +4,7 @@ import com.elicepark.domain.entity.Game
 import com.elicepark.domain.enums.Status
 import com.elicepark.domain.vo.TImeInfos
 import com.elicepark.domain.vo.TeamInfos
-import com.fasterxml.jackson.annotation.JsonProperty
+import org.springframework.data.domain.Pageable
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.validation.constraints.Future
@@ -49,5 +49,14 @@ sealed class GameInbound {
                 status = Status.READY
             )
         }
+    }
+
+    // N월M주에 있는 경기를 가져올 때 사용하는 DTO
+    data class GetGameListOfWeekRequest(
+        val from: LocalDate,
+        val to: LocalDate,
+        val pageable: Pageable
+    ) {
+
     }
 }

@@ -15,4 +15,13 @@ sealed class SuccessResults {
     data class Multiple<T>(
         val data: List<T>
     )
+
+    // 페이지네이션 된 성공 응답 정의
+    data class Paginated<T>(
+        val totalPages: Int,
+        val totalElements: Int,
+        val page: Int,
+        val elements: Int,
+        val data: List<T>
+    )
 }
