@@ -40,8 +40,8 @@ podTemplate(
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
-                    s3Download(file: 'game/user/application.yml', bucket: "${bucketName}", path: "${userResourcesDir}/")
-                    s3Download(file: 'game/admin/application.yml', bucket: "${bucketName}", path: "${adminResourcesDir}/")
+                    s3Download(file: "${userResourcesDir}/application.yml", bucket: "${bucketName}", path: "game/user/application.yml")
+                    s3Download(file: "${adminResourcesDir}/application.yml", bucket: "${bucketName}", path: "game/admin/application.yml")
                 }
 
                 sh "cat ${adminResourcesDir}/application.yml"
