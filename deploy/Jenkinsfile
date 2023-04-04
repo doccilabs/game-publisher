@@ -43,8 +43,8 @@ podTemplate(
                 sh "mkdir ${userResourcesDir}"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
-                    s3Download(file: 'game/game-admin.yml', bucket: "${bucketName}", path: "${adminResourcesDir}/")
-                    s3Download(file: 'game/game-user.yml', bucket: "${bucketName}", path: "${userResourcesDir}/")
+                    s3Download(file: "${adminResourcesDir}/game-admin.yml", bucket: "${bucketName}", path: "game/game-admin.yml", force: true)
+                    s3Download(file: "${userResourcesDir}/game-user.yml", bucket: "${bucketName}", path: "game/game-user.yml", force: true)
                 }
 
                 sh "ls -R"
