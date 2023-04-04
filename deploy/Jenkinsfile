@@ -50,7 +50,7 @@ podTemplate(
                 sh "ls -R"
 
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
-                sh "mv ${userResourcesDir}/game-admin.yml ${userResourcesDir}/application.yml"
+                sh "mv ${userResourcesDir}/game-user.yml ${userResourcesDir}/application.yml"
             }
 
             stage('Test') {
