@@ -39,12 +39,14 @@ podTemplate(
                 def adminResourcesDir = "${env.WORKSPACE}/adapter/application-admin/src/main/resources"
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources"
 
+                sh "mkdir ${adminResourcesDir}"
+                sh "mkdir ${userResourcesDir}"
+
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
                     s3Download(file: 'game/game-admin.yml', bucket: "${bucketName}", path: "${adminResourcesDir}/")
                     s3Download(file: 'game/game-user.yml', bucket: "${bucketName}", path: "${userResourcesDir}/")
                 }
 
-                sh "ls ${adminResourcesDir}/"
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
                 sh "mv ${userResourcesDir}/game-admin.yml ${userResourcesDir}/application.yml"
             }
