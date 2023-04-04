@@ -40,11 +40,8 @@ podTemplate(
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
-                    def userConfig = s3Download(file: 'game/game-user.yml', bucket: "${bucketName}")
-                    def adminConfig = s3Download(file: 'game/game-admin.yml', bucket: "${bucketName}")
-
-                    sh "cp ${userConfig} ${userResourcesDir}/application.yml"
-                    sh "cp ${adminConfig} ${adminResourcesDir}/application.yml"
+                    s3Download(file: 'game/user/application.yml', bucket: "${bucketName}", path: "${userResourcesDir}/")
+                    s3Download(file: 'game/admin/application.yml', bucket: "${bucketName}", path: "${adminResourcesDir}/")
                 }
             }
 
@@ -81,7 +78,6 @@ podTemplate(
             )
         } catch (Exception e) {
             echo "${e.message}"
-            echo "${e.stackTrace}"
 
             slackSend(
                 channel: 'deployment-notification',
