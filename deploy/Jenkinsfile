@@ -33,7 +33,7 @@ podTemplate(
             }
 
             stage('Test') {
-                dir("${env.WORKSPACE}/adapter/application-admin") {
+                dir("${env.WORKSPACE}") {
                     sh "chmod 755 ./gradlew"
                     sh "./gradlew test"
                 }
