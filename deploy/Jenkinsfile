@@ -38,9 +38,11 @@ podTemplate(
                 def bucketName = "miracle-yml-bucket"
                 def adminResourcesDir = "${env.WORKSPACE}/adapter/application-admin/src/main/resources"
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources"
+                def serviceResourcesDir = "${env.WORKSPACE}/port/service/src/main/resources"
 
                 sh "mkdir ${adminResourcesDir}"
                 sh "mkdir ${userResourcesDir}"
+                sh "mkdir ${serviceResourcesDir}"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
                     s3Download(file: "${adminResourcesDir}/game-admin.yml", bucket: "${bucketName}", path: "game/game-admin.yml", force: true)
@@ -51,6 +53,7 @@ podTemplate(
 
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
                 sh "mv ${userResourcesDir}/game-user.yml ${userResourcesDir}/application.yml"
+                sh "cp ${userResourcesDir}/application.yml ${serviceResourcesDir}/application.yml"
             }
 
             stage('Test') {
