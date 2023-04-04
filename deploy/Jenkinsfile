@@ -30,6 +30,7 @@ podTemplate(
     node('docker-build') {
         try {
             stage('Checkout') {
+                deleteDir()
                 checkout scm
             }
 
