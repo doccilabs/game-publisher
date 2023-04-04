@@ -81,6 +81,7 @@ podTemplate(
             )
         } catch (Exception e) {
             echo "${e.message}"
+            echo "${e.stackTrace}"
 
             slackSend(
                 channel: 'deployment-notification',
