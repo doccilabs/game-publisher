@@ -34,12 +34,13 @@ podTemplate(
             }
 
             stage('Append .yml files') {
+                def bucketName = "miracle-yml-bucket"
                 def adminResourcesDir = "${env.WORKSPACE}/adapter/application-admin/src/main/resources/"
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources/"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
-                    sh "aws s3 cp s3://miracle-yml-bucket/game/game-admin.yml ${adminResourcesDir}"
-                    sh "aws s3 cp s3://miracle-yml-bucket/game/game-user.yml ${userResourcesDir}"
+                    s3Download(file: 'game/game-user.yml', bucket: "${bucketName}", path: "${userResourcesDir}")
+                    s3Download(file: 'game/game-admin.yml', bucket: "${bucketName}", path: "${adminResourcesDir}")
                 }
             }
 
