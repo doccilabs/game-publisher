@@ -44,7 +44,7 @@ podTemplate(
                     s3Download(file: 'game/admin/application.yml', bucket: "${bucketName}", path: "${adminResourcesDir}/")
                 }
 
-                cat "${adminResourcesDir}/application.yml"
+                sh "cat ${adminResourcesDir}/application.yml"
             }
 
             stage('Test') {
