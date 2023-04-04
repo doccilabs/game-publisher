@@ -47,6 +47,8 @@ podTemplate(
                     s3Download(file: 'game/game-user.yml', bucket: "${bucketName}", path: "${userResourcesDir}/")
                 }
 
+                sh "ls -R"
+
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
                 sh "mv ${userResourcesDir}/game-admin.yml ${userResourcesDir}/application.yml"
             }
