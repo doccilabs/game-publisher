@@ -1,6 +1,7 @@
 def AWS_REGION = "ap-northeast-2"
 def AWS_ACCOUNT_ID = "014276069644"
 
+def S3_CREDENTIAL_ID = "miracle_s3_user"
 def JENKINS_ECR_CREDENTIAL_ID = "jenkins_ecr_user"
 
 def APP_NAME = "game-publisher"
@@ -30,6 +31,16 @@ podTemplate(
         try {
             stage('Checkout') {
                 checkout scm
+            }
+
+            stage('Append .yml files') {
+                def adminResourcesDir = "${env.WORKSPACE}/adapter/application-admin/src/main/resources/"
+                def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources/"
+
+                withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
+                    sh "aws s3 cp s3://miracle-yml-bucket/game/game-admin.yml ${adminResourcesDir}"
+                    sh "aws s3 cp s3://miracle-yml-bucket/game/game-user.yml ${userResourcesDir}"
+                }
             }
 
             stage('Test') {
