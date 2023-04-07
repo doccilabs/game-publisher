@@ -33,6 +33,8 @@ class GameAdminController(
     @PostMapping("")
     suspend fun createGame(@Valid @RequestBody createRequest: GameInbound.CreateRequest): SuccessResults.Single<GameOutbound.CreateResponse> =
         coroutineScope {
+            // SQS 메세징에서 사용할 코루틴 컨텍스트 정의
+            val messagingCoroutineContext = this.coroutineContext + coroutineContext
             val gameCreatedResponse = gameService.registerGame(createRequest)
 
             return@coroutineScope ResultFactory.getSingleResponse(gameCreatedResponse)
