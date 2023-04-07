@@ -1,5 +1,5 @@
 dependencies {
-    api(project(":adapter:dao"))
+    runtimeOnly(project(":adapter:dao"))
     api(project(":port:repository"))
     api(project(":port:dto"))
 
