@@ -88,7 +88,7 @@ podTemplate(
             }
 
             stage('Docker build and push (user)') {
-                dir("${env.WORKSPACE}adapter/application-user") {
+                dir("${env.WORKSPACE}/adapter/application-user") {
                     container('docker') {
                         docker.withRegistry("https://${ECR_REPO_USER}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
                             image = docker.build("${ECR_REPO_USER}:latest")
