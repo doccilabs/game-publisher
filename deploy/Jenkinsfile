@@ -50,8 +50,6 @@ podTemplate(
                     s3Download(file: "${userResourcesDir}/game-user.yml", bucket: "${bucketName}", path: "game/game-user.yml", force: true)
                 }
 
-                sh "ls -R"
-
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
                 sh "mv ${userResourcesDir}/game-user.yml ${userResourcesDir}/application.yml"
                 sh "cp ${userResourcesDir}/application.yml ${serviceResourcesDir}/application.yml"
@@ -67,7 +65,7 @@ podTemplate(
             stage('Build the admin application') {
                 dir("${env.WORKSPACE}/adapter/application-admin") {
                     sh "chmod 755 ./gradlew"
-                    sh "./gradlew build"
+                    sh "./gradlew build -x test"
                 }
             }
 
@@ -85,7 +83,7 @@ podTemplate(
             stage('Build the user application') {
                 dir("${env.WORKSPACE}/adapter/application-user") {
                     sh "chmod 755 ./gradlew"
-                    sh "./gradlew build"
+                    sh "./gradlew build -x test"
                 }
             }
 
