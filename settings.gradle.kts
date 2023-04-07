@@ -33,7 +33,7 @@ include("domain")
 
 include(
     "port",
-    "port:event-interface",
+    "port:messaging-interface",
     "port:repository",
     "port:service",
     "port:dto"
