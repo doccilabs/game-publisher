@@ -5,7 +5,8 @@ def S3_CREDENTIAL_ID = "miracle_s3_user"
 def JENKINS_ECR_CREDENTIAL_ID = "jenkins_ecr_user"
 
 def APP_NAME = "game-publisher"
-def ECR_REPO = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-publisher"
+def ECR_REPO_ADMIN = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-admin"
+def ECR_REPO_USER = "014276069644.dkr.ecr.ap-northeast-2.amazonaws.com/game-user"
 
 podTemplate(
     label: 'docker-build',
@@ -63,19 +64,36 @@ podTemplate(
                 }
             }
 
-            stage('Build the application') {
-                dir("${env.WORKSPACE}") {
-                    sh "cd adapter/application-admin"
+            stage('Build the admin application') {
+                dir("${env.WORKSPACE}/adapter/application-admin") {
                     sh "chmod 755 ./gradlew"
                     sh "./gradlew build"
                 }
             }
 
-            stage('Docker build and push') {
+            stage('Docker build and push (admin)') {
                 dir("${env.WORKSPACE}/adapter/application-admin") {
                     container('docker') {
-                        docker.withRegistry("https://${ECR_REPO}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
-                            image = docker.build("${ECR_REPO}:latest")
+                        docker.withRegistry("https://${ECR_REPO_ADMIN}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
+                            image = docker.build("${ECR_REPO_ADMIN}:latest")
+                            image.push()
+                        }
+                    }
+                }
+            }
+
+            stage('Build the user application') {
+                dir("${env.WORKSPACE}/adapter/application-user") {
+                    sh "chmod 755 ./gradlew"
+                    sh "./gradlew build"
+                }
+            }
+
+            stage('Docker build and push (user)') {
+                dir("${env.WORKSPACE}adapter/application-user") {
+                    container('docker') {
+                        docker.withRegistry("https://${ECR_REPO_USER}", "ecr:${AWS_REGION}:${JENKINS_ECR_CREDENTIAL_ID}") {
+                            image = docker.build("${ECR_REPO_USER}:latest")
                             image.push()
                         }
                     }
