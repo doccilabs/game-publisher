@@ -37,21 +37,34 @@ podTemplate(
 
             stage('Append .yml files') {
                 def bucketName = "miracle-yml-bucket"
+                def sqsResourcesDir = "${env.WORKSPACE}/adapter/messaging-producer/src/main/resources"
                 def adminResourcesDir = "${env.WORKSPACE}/adapter/application-admin/src/main/resources"
                 def userResourcesDir = "${env.WORKSPACE}/adapter/application-user/src/main/resources"
                 def serviceResourcesDir = "${env.WORKSPACE}/port/service/src/main/resources"
 
+                sh "mkdir ${sqsResourcesDir}"
                 sh "mkdir ${adminResourcesDir}"
                 sh "mkdir ${userResourcesDir}"
                 sh "mkdir ${serviceResourcesDir}"
 
                 withAWS(region: "${AWS_REGION}", credentials: "${S3_CREDENTIAL_ID}") {
+                    // MySQL 설정 정보 다운로드
+                    s3Download(file: "${adminResourcesDir}/application-mysql.yml", bucket: "${bucketName}", path: "game/application-mysql.yml", force: true)
+                    // SQS 설정 정보 다운로드
+                    s3Download(file: "${sqsResourcesDir}/application-sqs.yml", bucket: "${bucketName}", path: "game/application-sqs.yml", force: true)
+                    // 배포전용 yml 설정 정보 다운로드
                     s3Download(file: "${adminResourcesDir}/game-admin.yml", bucket: "${bucketName}", path: "game/game-admin.yml", force: true)
                     s3Download(file: "${userResourcesDir}/game-user.yml", bucket: "${bucketName}", path: "game/game-user.yml", force: true)
                 }
 
+                // yml 파일 이름 변경
                 sh "mv ${adminResourcesDir}/game-admin.yml ${adminResourcesDir}/application.yml"
                 sh "mv ${userResourcesDir}/game-user.yml ${userResourcesDir}/application.yml"
+
+                // MySQL 설정 파일을 user application에도 똑같이 복사한다
+                sh "cp ${adminResourcesDir}/application-mysql.yml ${userResourcesDir}/application-mysql.yml"
+                // service 테스트 컨텍스트를 위해서 application.yml을 service 레이어에 복사한다
+                sh "cp ${userResourcesDir}/application-mysql.yml ${serviceResourcesDir}/application-mysql.yml"
                 sh "cp ${userResourcesDir}/application.yml ${serviceResourcesDir}/application.yml"
             }
 
