@@ -1,4 +1,4 @@
-package com.elicepark.messaging.config
+package com.elicepark.producer.config
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -16,8 +16,7 @@ import org.springframework.context.annotation.Configuration
 class SqsConfig(
     @Value("\${cloud.aws.region.static}") private val region: String,
     @Value("\${cloud.aws.credentials.accessKey}") private val accessKey: String,
-    @Value("\${cloud.aws.credentials.secretKey}") private val secretKey: String,
-    @Value("\${sqs.queue.name}") private val queueName: String
+    @Value("\${cloud.aws.credentials.secretKey}") private val secretKey: String
 ) {
     // For Amazon SQS Configuration
     @Bean

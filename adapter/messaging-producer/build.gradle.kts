@@ -1,8 +1,9 @@
 val sqsVersion = "1.12.349"
 
 dependencies {
-    api(project(":port:dto"))
+    api(project(":port:messaging-interface"))
 
+    // implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging")
     implementation("com.amazonaws:aws-java-sdk-sqs:${sqsVersion}")
 }
 
