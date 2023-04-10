@@ -33,7 +33,7 @@ include("domain")
 
 include(
     "port",
-    "port:event-interface",
+    "port:messaging-interface",
     "port:repository",
     "port:service",
     "port:dto"
@@ -43,5 +43,6 @@ include(
     "adapter",
     "adapter:dao",
     "adapter:application-admin",
-    "adapter:application-user"
+    "adapter:application-user",
+    "adapter:messaging-producer"
 )
